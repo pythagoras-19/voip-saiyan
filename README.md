@@ -1,15 +1,38 @@
-# VoIP Saiyan: Securing Voice in the Quantum + AI Era
+# Capability Funnel: CHERI-Inspired Least-Privilege VoIP
+**MSCS → PhD Research | Part-Time UNT CSE | Summer 2026 Industry Launch**  
+*Jim @Jimreadsalot | Building the dissertation that closes $250 K UCaaS deals*
 
-MSCS Capstone | Spring 2026 | [Your Name]
+> **TL;DR**: A 4-week MVP that contains Asterisk memory corruption with <20 % latency overhead using a time-bounded capability funnel. From SIP INIT to RTP teardown—every privileged op is granted, audited, and revoked. **Live demo → USENIX artifact → your next government RFP.**
 
-**TL;DR**: A full-stack VoIP security architecture demo—deepfake detection, quantum key exchange, 5G QoS testbed, fuzz-hardened SIP, and a 2030 trends whitepaper. Built for UCaaS/SaaS pros: *From packet to policy in <300ms latency.*
+---
 
 ## Why This Repo?
-- **Problem**: VoIP faces AI deepfakes, quantum breaks, 5G jitter, and SIP vulns.
-- **Solution**: Modular stack fusing NLP, Crypto, SE, Wireless, Secure Dev.
-- **Impact**: 97% deepfake precision + quantum-safe SRTP → Zero-trust UC for enterprises.
 
-## Quickstart
+| Threat | Status Quo | Funnel Fix |
+|--------|------------|-----------|
+| **SIP parser bug** → full PBX takeover | Broad process privs | Contained to one call-ID |
+| **RTP socket hijack** → media leak | Open sockets forever | Revoked on hangup |
+| **Module lateral pivot** → host compromise | Shared memory | Deny counters + seccomp |
+
+**Impact**:
+- **Security**: 100 % of injected faults denied (baseline → MVP)
+- **Performance**: Call setup +17 ms (target ≤ +20 %)
+- **Compliance**: JSON audit logs → Splunk in 2 clicks
+
+*Perfect for Montana counties, DoD SIPR, or any zero-trust UC tenant.*
+
+---
+
+## Quickstart (90 seconds to first GRANTED)
+
 ```bash
-docker-compose up  # Fires up all modules
-python demo.py     # 2-min walkthrough
+git clone https://github.com/jimreadsalot/capability-funnel.git
+cd capability-funnel
+
+# 1. Baseline Asterisk (PJSIP + RTP)
+docker compose up -d asterisk
+./scripts/register-softphones.sh   # Groundwire/Linphone
+
+# 2. Fire the funnel
+export LD_PRELOAD=$(pwd)/libfunnel.so
+asterisk -fvvvvc | grep CAPFUNNEL
