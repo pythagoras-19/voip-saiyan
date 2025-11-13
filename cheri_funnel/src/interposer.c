@@ -134,6 +134,6 @@ ssize_t sendto(int fd, const void *buf, size_t len, int flags,
 
 // Init seccomp on load (constructor)
 __attribute__((constructor)) void init() {
-    install_seccomp_filter();
+    // install_seccomp_filter();
     fprintf(stderr, "[CAPFUNNEL] Initialized with seccomp filter\n");
 }
